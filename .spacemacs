@@ -450,6 +450,20 @@ This function is called immediately after `dotspacemacs/init', before layer
 configuration.
 It is mostly for variables that should be set before packages are loaded.
 If you are unsure, try setting them in `dotspacemacs/user-config' first."
+
+  ;; Maximize edince ekranı tam kapatmama sorununun çözümü
+  (setq frame-resize-pixelwise t)
+
+  ;; Indentations
+  (setq-default
+   js2-basic-offset 2
+   css-indent-offset 2
+   web-mode-markup-indent-offset 2
+   web-mode-css-indent-offset 2
+   web-mode-code-indent-offset 2
+   web-mode-attr-indent-offset 2)
+
+  ;;(setq highlight-indent-guides-method 'character)
   )
 
 (defun dotspacemacs/user-load ()
@@ -457,6 +471,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
+
+  ;; enable turkish mode
+  ;;(require 'turkish)
+
   )
 
 (defun dotspacemacs/user-config ()
@@ -465,6 +483,56 @@ This function is called at the very end of Spacemacs startup, after layer
 configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
+
+  ;; Satıra sığmayan yazıyı alt satırda göstermek yerine kes
+  (set-default 'truncate-lines t)
+
+  ;; C-h ile backspace
+  ;; (keyboard-translate ?\C-h ?\C-?)
+  ;; (keyboard-translate ?\C-? ?\C-h)
+
+  ;; Genişleterek tara
+  (global-set-key (kbd "C-t") 'er/expand-region)
+
+  ;; Kill ringi göster
+  (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+
+  ;; Projetile'ı git reposundan aç
+  (global-set-key (kbd "C-x f") 'helm-projectile)
+
+  ;; Yazı tarayıp başka bir şey yazınca taranmış yazıyı sil
+  (delete-selection-mode 1)
+
+  ;; Clear ile eshelli temizle
+  (defun eshell/clear ()
+    (let ((eshell-buffer-maximum-lines 0)) (eshell-truncate-buffer)))
+
+  ;; Yeni açılan windowa direk geçiş yap
+  (global-set-key (kbd "C-x 2") 'split-window-below-and-focus)
+  (global-set-key (kbd "C-x 3") 'split-window-right-and-focus)
+
+  ;; emmet-mode (web mode icinde bir minor) icin editlebilir noktalarda ilerleme
+  ;; (with-eval-after-load 'emmet-mode
+  ;;   (local-set-key (kbd "M-n") 'emmet-next-edit-point)
+  ;;   (local-set-key (kbd "M-p") 'emmet-prev-edit-point)
+  ;;   )
+
+  ;; Company mode'u globalde çalıştır
+  ;;(global-company-mode)
+
+  ;; Expand snippets
+  ;;(define-key yas-minor-mode-map (kbd "C-c C-s") 'yas-expand)
+
+  ;; Other window
+  (define-key (current-global-map) (kbd "M-o") 'other-window)
+
+  ;; Enable highlight indentation guides in prog modes
+  ;;(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+
+  ;; Scroll up/down rate
+  (global-set-key (kbd "C-v") (lambda () (interactive) (scroll-up-command 15)))
+  (global-set-key (kbd "M-v") (lambda () (interactive) (scroll-down-command 15)))
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
