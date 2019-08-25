@@ -62,7 +62,12 @@ This function should only modify configuration layer settings."
    ;; To use a local version of a package, use the `:location' property:
    ;; '(your-package :location "~/path/to/your-package/")
    ;; Also include the dependencies as they will not be resolved automatically.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages
+   '(
+     yasnippet-snippets
+     highlight-indent-guides
+     turkish
+    )
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
@@ -454,6 +459,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Maximize edince ekranı tam kapatmama sorununun çözümü
   (setq frame-resize-pixelwise t)
 
+  ;; Satıra sığmayan yazıyı alt satırda göstermek yerine kes
+  (set-default 'truncate-lines t)
+
   ;; Indentations
   (setq-default
    js2-basic-offset 2
@@ -463,7 +471,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    web-mode-code-indent-offset 2
    web-mode-attr-indent-offset 2)
 
-  ;;(setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-method 'character)
   )
 
 (defun dotspacemacs/user-load ()
@@ -471,10 +479,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 This function is called only while dumping Spacemacs configuration. You can
 `require' or `load' the libraries of your choice that will be included in the
 dump."
-
-  ;; enable turkish mode
-  ;;(require 'turkish)
-
   )
 
 (defun dotspacemacs/user-config ()
@@ -484,12 +488,9 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
-  ;; Satıra sığmayan yazıyı alt satırda göstermek yerine kes
-  (set-default 'truncate-lines t)
-
   ;; C-h ile backspace
-  ;; (keyboard-translate ?\C-h ?\C-?)
-  ;; (keyboard-translate ?\C-? ?\C-h)
+  ;;(keyboard-translate ?\C-h ?\C-?)
+  ;;(keyboard-translate ?\C-? ?\C-h)
 
   ;; Genişleterek tara
   (global-set-key (kbd "C-t") 'er/expand-region)
@@ -527,7 +528,7 @@ before packages are loaded."
   (define-key (current-global-map) (kbd "M-o") 'other-window)
 
   ;; Enable highlight indentation guides in prog modes
-  ;;(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 
   ;; Scroll up/down rate
   (global-set-key (kbd "C-v") (lambda () (interactive) (scroll-up-command 15)))
