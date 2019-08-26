@@ -38,21 +38,27 @@ This function should only modify configuration layer settings."
      ;; Uncomment some layer names and press `SPC f e R' (Vim style) or
      ;; `M-m f e R' (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     ;; auto-completion
-     ;; better-defaults
      emacs-lisp
-     ;; git
      helm
-     ;; markdown
      multiple-cursors
-     ;; org
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
-     ;; spell-checking
-     ;; syntax-checking
      treemacs
-     ;; version-control
+     syntax-checking
+     (better-defaults :variables
+                      better-defaults-move-to-end-of-code-first t
+                      )
+     (auto-completion :variables
+                      auto-completion-tab-key-behavior 'complete
+                      auto-completion-complete-with-key-sequence '"jk"
+                      auto-completion-complete-with-key-sequence-delay 0.2
+                      auto-completion-enable-snippets-in-popup t
+                      auto-completion-enable-help-tooltip t
+                      auto-completion-enable-sort-by-usage t
+                      )
+     (python :variables
+             python-formatter 'black
+             python-format-on-save t
+             python-sort-imports-on-save t)
+     restclient
      )
 
    ;; List of additional packages that will be installed without being
@@ -488,10 +494,6 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
-  ;; C-h ile backspace
-  ;;(keyboard-translate ?\C-h ?\C-?)
-  ;;(keyboard-translate ?\C-? ?\C-h)
-
   ;; Genişleterek tara
   (global-set-key (kbd "C-t") 'er/expand-region)
 
@@ -519,16 +521,17 @@ before packages are loaded."
   ;;   )
 
   ;; Company mode'u globalde çalıştır
-  ;;(global-company-mode)
+  (global-company-mode)
 
   ;; Expand snippets
-  ;;(define-key yas-minor-mode-map (kbd "C-c C-s") 'yas-expand)
+  (define-key yas-minor-mode-map (kbd "C-c C-s") 'yas-expand)
 
   ;; Other window
   (define-key (current-global-map) (kbd "M-o") 'other-window)
 
   ;; Enable highlight indentation guides in prog modes
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'prog-mode-hook 'highlight-indent-guides-auto-set-faces)
 
   ;; Scroll up/down rate
   (global-set-key (kbd "C-v") (lambda () (interactive) (scroll-up-command 15)))
@@ -538,3 +541,10 @@ before packages are loaded."
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
