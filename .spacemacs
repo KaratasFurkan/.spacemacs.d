@@ -73,13 +73,18 @@ This function should only modify configuration layer settings."
      yasnippet-snippets
      highlight-indent-guides
      turkish
-    )
+     beacon
+     deadgrep
+     )
 
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
 
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages
+   '(
+     vi-tilde-fringe
+     )
 
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
@@ -177,7 +182,7 @@ It should only modify the values of Spacemacs settings."
    ;; `recents' `bookmarks' `projects' `agenda' `todos'.
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
-   dotspacemacs-startup-lists '((recents . 10)
+   dotspacemacs-startup-lists '((recents . 20)
                                 (projects . 10))
 
    ;; True if the home buffer should respond to resize events. (default t)
@@ -478,6 +483,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
    web-mode-attr-indent-offset 2)
 
   (setq highlight-indent-guides-method 'character)
+
+  (setq-default beacon-color "#005500")
   )
 
 (defun dotspacemacs/user-load ()
@@ -537,6 +544,15 @@ before packages are loaded."
   (global-set-key (kbd "C-v") (lambda () (interactive) (scroll-up-command 15)))
   (global-set-key (kbd "M-v") (lambda () (interactive) (scroll-down-command 15)))
 
+  ;; Move cursor by camelCase
+  (global-subword-mode 1)
+
+  ;; Jump char
+  (global-set-key (kbd "M-j") 'avy-goto-char-timer)
+
+  ;; Beacon Mode
+  (beacon-mode 1)
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -548,3 +564,25 @@ before packages are loaded."
  ;; If there is more than one, they won't work right.
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+(defun dotspacemacs/emacs-custom-settings ()
+  "Emacs custom settings.
+This is an auto-generated function, do not modify its content directly, use
+Emacs customize menu instead.
+This function is called at the very end of Spacemacs initialization."
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(evil-want-Y-yank-to-eol nil)
+ '(package-selected-packages
+   (quote
+    (beacon yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key volatile-highlights uuidgen use-package unfill turkish treemacs-projectile toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restclient-helm restart-emacs request rainbow-delimiters pytest pyenv-mode py-isort popwin pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer org-plus-contrib org-bullets open-junk-file ob-restclient ob-http nameless mwim move-text macrostep lorem-ipsum live-py-mode link-hint indent-guide importmagic hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio fuzzy font-lock+ flycheck-pos-tip flycheck-package flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish devdocs define-word cython-mode company-statistics company-restclient company-quickhelp company-anaconda column-enforce-mode clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+)
