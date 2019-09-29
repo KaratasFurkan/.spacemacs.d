@@ -57,8 +57,20 @@ This function should only modify configuration layer settings."
      (python :variables
              python-formatter 'black
              python-format-on-save t
-             python-sort-imports-on-save t)
+             python-sort-imports-on-save t
+             )
      restclient
+     (sql :variables
+          sql-capitalize-keywords t
+          )
+     (c-c++ :variables
+            c-c++-backend 'lsp-cquery
+            c++-enable-organize-includes-on-save t
+            c-c++-enable-clang-format-on-save t
+            ;; c-c++-enable-google-style t ??
+            ;; c-c++-enable-google-newline t ??
+            c-c++-enable-auto-newline t ;; ??
+            )
      )
 
    ;; List of additional packages that will be installed without being
@@ -531,7 +543,7 @@ before packages are loaded."
   (global-company-mode)
 
   ;; Expand snippets
-  (define-key yas-minor-mode-map (kbd "C-c C-s") 'yas-expand)
+  (define-key yas-minor-mode-map (kbd "C-c C-y C-e") 'yas-expand)
 
   ;; Other window
   (define-key (current-global-map) (kbd "M-o") 'other-window)
@@ -550,8 +562,20 @@ before packages are loaded."
   ;; Jump char
   (global-set-key (kbd "M-j") 'avy-goto-char-timer)
 
+  ;; Jump line
+  (global-set-key (kbd "M-l") 'avy-goto-line)
+
   ;; Beacon Mode
   (beacon-mode 1)
+
+  ;; Pop marker back (return back from definition)
+  (global-set-key (kbd "M-ç") 'xref-pop-marker-stack)
+
+  ;; Switch window (ace-window)
+  (global-set-key (kbd "M-m w w") 'ace-window)
+
+  ;; Swap window
+  (global-set-key (kbd "M-m w s") 'ace-swap-window)
 
   )
 
@@ -574,10 +598,33 @@ This function is called at the very end of Spacemacs initialization."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#0a0814" "#f2241f" "#67b11d" "#b1951d" "#4f97d7" "#a31db1" "#28def0" "#b2b2b2"])
+ '(custom-safe-themes
+   (quote
+    ("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(evil-want-Y-yank-to-eol nil)
+ '(hl-todo-keyword-faces
+   (quote
+    (("TODO" . "#dc752f")
+     ("NEXT" . "#dc752f")
+     ("THEM" . "#2d9574")
+     ("PROG" . "#4f97d7")
+     ("OKAY" . "#4f97d7")
+     ("DONT" . "#f2241f")
+     ("FAIL" . "#f2241f")
+     ("DONE" . "#86dc2f")
+     ("NOTE" . "#b1951d")
+     ("KLUDGE" . "#b1951d")
+     ("HACK" . "#b1951d")
+     ("TEMP" . "#b1951d")
+     ("FIXME" . "#dc752f")
+     ("XXX+" . "#dc752f")
+     ("\\?\\?\\?+" . "#dc752f"))))
  '(package-selected-packages
    (quote
-    (beacon yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key volatile-highlights uuidgen use-package unfill turkish treemacs-projectile toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restclient-helm restart-emacs request rainbow-delimiters pytest pyenv-mode py-isort popwin pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer org-plus-contrib org-bullets open-junk-file ob-restclient ob-http nameless mwim move-text macrostep lorem-ipsum live-py-mode link-hint indent-guide importmagic hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio fuzzy font-lock+ flycheck-pos-tip flycheck-package flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish devdocs define-word cython-mode company-statistics company-restclient company-quickhelp company-anaconda column-enforce-mode clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell))))
+    (sqlup-mode beacon yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key volatile-highlights uuidgen use-package unfill turkish treemacs-projectile toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restclient-helm restart-emacs request rainbow-delimiters pytest pyenv-mode py-isort popwin pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer org-plus-contrib org-bullets open-junk-file ob-restclient ob-http nameless mwim move-text macrostep lorem-ipsum live-py-mode link-hint indent-guide importmagic hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio fuzzy font-lock+ flycheck-pos-tip flycheck-package flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish devdocs define-word cython-mode company-statistics company-restclient company-quickhelp company-anaconda column-enforce-mode clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
+ '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
