@@ -40,13 +40,22 @@ This function should only modify configuration layer settings."
      ;; ----------------------------------------------------------------
      emacs-lisp
      helm
-     multiple-cursors
-     treemacs
-     syntax-checking
+     (multiple-cursors :variables
+                       multiple-cursors-backend 'mc
+                       )
+     (treemacs :variables
+               treemacs-lock-width t
+               treemacs-use-git-mode 'deferred
+               )
+
+     (syntax-checking :variables
+                      syntax-checking-use-original-bitmaps t
+                      )
      (better-defaults :variables
                       better-defaults-move-to-end-of-code-first t
                       )
      (auto-completion :variables
+                      auto-completion-return-key-behavior 'nil
                       auto-completion-tab-key-behavior 'complete
                       auto-completion-complete-with-key-sequence '"jk"
                       auto-completion-complete-with-key-sequence-delay 0.2
@@ -64,13 +73,42 @@ This function should only modify configuration layer settings."
           sql-capitalize-keywords t
           )
      (c-c++ :variables
-            c-c++-backend 'lsp-cquery
-            c++-enable-organize-includes-on-save t
-            c-c++-enable-clang-format-on-save t
-            ;; c-c++-enable-google-style t ??
-            ;; c-c++-enable-google-newline t ??
-            c-c++-enable-auto-newline t ;; ??
-            )
+          c-c++-backend 'lsp-cquery
+          c++-enable-organize-includes-on-save t
+          c-c++-enable-clang-format-on-save t
+          ;; c-c++-enable-google-style t ??
+          ;; c-c++-enable-google-newline t ??
+          c-c++-enable-auto-newline t ;; ??
+          )
+     csv
+     prettier
+     (html :variables
+           web-fmt-tool 'prettier
+           scss-enable-lsp t
+           css-enable-lsp t
+           less-enable-lsp t
+           )
+     (json :variables
+           json-fmt-tool 'prettier
+           json-fmt-on-save t
+           )
+     lsp
+     import-js
+     (javascript :variables
+                 node-add-modules-path t
+                 javascript-import-tool 'import-js
+                 javascript-backend 'lsp
+                 javascript-fmt-tool 'prettier
+                 javascript-fmt-on-save t
+                 )
+     react
+     (version-control :variables
+                      version-control-diff-side 'left
+                      )
+     git
+     slack ;; TODO ayarla
+     shell-scripts
+     ;;templates
      )
 
    ;; List of additional packages that will be installed without being
@@ -488,15 +526,28 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Indentations
   (setq-default
    js2-basic-offset 2
+   js-indent-level 2
    css-indent-offset 2
    web-mode-markup-indent-offset 2
    web-mode-css-indent-offset 2
    web-mode-code-indent-offset 2
    web-mode-attr-indent-offset 2)
 
-  (setq highlight-indent-guides-method 'character)
+  ;; Lsp-linter semicolon warning fix
+  (setq js2-strict-missing-semi-warning nil)
 
+  ;; Indentation guides
+  (setq highlight-indent-guides-method 'character)
+  (setq highlight-indent-guides-responsive 'top)
+
+  ;; Beacon
   (setq-default beacon-color "#005500")
+
+  ;; Frame title (file name and major mode)
+  (setq-default frame-title-format '("%b [%m]"))
+
+  ;; Do not create lockfiles
+  (setq create-lockfiles nil)
   )
 
 (defun dotspacemacs/user-load ()
@@ -542,8 +593,14 @@ before packages are loaded."
   ;; Company mode'u globalde çalıştır
   (global-company-mode)
 
+  ;; Yasnippet prefix for which-key
+  (spacemacs/declare-prefix "y" "yasnippet")
+
   ;; Expand snippets
-  (define-key yas-minor-mode-map (kbd "C-c C-y C-e") 'yas-expand)
+  (define-key yas-minor-mode-map (kbd "M-m y e") 'yas-expand)
+
+  ;; Helm search snippets
+  (define-key yas-minor-mode-map (kbd "M-m y h") 'spacemacs/helm-yas)
 
   ;; Other window
   (define-key (current-global-map) (kbd "M-o") 'other-window)
@@ -568,6 +625,8 @@ before packages are loaded."
   ;; Beacon Mode
   (beacon-mode 1)
 
+  ;; Jump to definition
+  (global-set-key (kbd "M-.") 'spacemacs/jump-to-definition)
   ;; Pop marker back (return back from definition)
   (global-set-key (kbd "M-ç") 'xref-pop-marker-stack)
 
@@ -577,17 +636,27 @@ before packages are loaded."
   ;; Swap window
   (global-set-key (kbd "M-m w s") 'ace-swap-window)
 
+  ;; Multiple cursors next
+  (global-set-key (kbd "C-M-n") 'mc/mark-next-like-this)
+  ;; Multiple cursors previous
+  (global-set-key (kbd "C-M-p") 'mc/mark-previous-like-this)
+  ;; Multiple cursors skip next
+  (global-set-key (kbd "C-M-S-n") 'mc/skip-to-next-like-this)
+  ;; Multiple cursors skip previous
+  (global-set-key (kbd "C-M-S-p") 'mc/skip-to-previous-like-this)
+  ;; Multiple cursors add cursor on click
+  (global-set-key (kbd "C-M-<mouse-1>") 'mc/add-cursor-on-click)
+
+  ;; Winner-undo
+  (define-key (current-global-map) (kbd "M-u") 'winner-undo)
+  ;; Winner-redo
+  (define-key (current-global-map) (kbd "M-U") 'winner-redo)
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+
 (defun dotspacemacs/emacs-custom-settings ()
   "Emacs custom settings.
 This is an auto-generated function, do not modify its content directly, use
@@ -623,7 +692,8 @@ This function is called at the very end of Spacemacs initialization."
      ("\\?\\?\\?+" . "#dc752f"))))
  '(package-selected-packages
    (quote
-    (sqlup-mode beacon yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key volatile-highlights uuidgen use-package unfill turkish treemacs-projectile toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restclient-helm restart-emacs request rainbow-delimiters pytest pyenv-mode py-isort popwin pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer org-plus-contrib org-bullets open-junk-file ob-restclient ob-http nameless mwim move-text macrostep lorem-ipsum live-py-mode link-hint indent-guide importmagic hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio fuzzy font-lock+ flycheck-pos-tip flycheck-package flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish devdocs define-word cython-mode company-statistics company-restclient company-quickhelp company-anaconda column-enforce-mode clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
+    (helm-rg yatemplate rjsx-mode import-js grizzl web-mode tagedit slim-mode scss-mode sass-mode pug-mode impatient-mode htmlize helm-css-scss haml-mode emmet-mode company-web web-completion-data web-beautify prettier-js nodejs-repl livid-mode skewer-mode simple-httpd json-navigator hierarchy json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern tern csv-mode sqlup-mode beacon yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key volatile-highlights uuidgen use-package unfill turkish treemacs-projectile toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restclient-helm restart-emacs request rainbow-delimiters pytest pyenv-mode py-isort popwin pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer org-plus-contrib org-bullets open-junk-file ob-restclient ob-http nameless mwim move-text macrostep lorem-ipsum live-py-mode link-hint indent-guide importmagic hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio fuzzy font-lock+ flycheck-pos-tip flycheck-package flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish devdocs define-word cython-mode company-statistics company-restclient company-quickhelp company-anaconda column-enforce-mode clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
+ '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
@@ -631,5 +701,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
- '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil)))))
+ '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+ '(lsp-face-highlight-read ((t (:underline t :weight bold))))
+ )
 )
