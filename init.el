@@ -616,8 +616,8 @@ before packages are loaded."
   ;; Move cursor by camelCase
   (global-subword-mode 1)
 
-  ;; Jump char
-  (global-set-key (kbd "M-j") 'avy-goto-char-timer)
+  ;; Jump word
+  (global-set-key (kbd "M-j") 'avy-goto-word-or-subword-1)
 
   ;; Jump line
   (global-set-key (kbd "M-l") 'avy-goto-line)
