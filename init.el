@@ -650,9 +650,9 @@ before packages are loaded."
   ;; Multiple cursors skip previous
   (global-set-key (kbd "C-M-S-p") 'mc/skip-to-previous-like-this)
   ;; Multiple cursors unmark last
-  (global-set-key (kbd "M-N") 'mc/unmark-previous-like-this)
+  (global-set-key (kbd "C-S-N") 'mc/unmark-previous-like-this)
   ;; Multiple cursors unmark first
-  (global-set-key (kbd "M-P") 'mc/unmark-next-like-this)
+  (global-set-key (kbd "C-S-P") 'mc/unmark-next-like-this)
   ;; Multiple cursors add cursor on click
   (global-set-key (kbd "C-M-<mouse-1>") 'mc/add-cursor-on-click)
   ;; Multiple cursors hide unmatched lines
