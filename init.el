@@ -111,6 +111,7 @@ This function should only modify configuration layer settings."
      spotify
      themes-megapack
      xkcd
+     ipython-notebook
      ;;templates
      )
 
@@ -236,7 +237,8 @@ It should only modify the values of Spacemacs settings."
    ;; List sizes may be nil, in which case
    ;; `spacemacs-buffer-startup-lists-length' takes effect.
    dotspacemacs-startup-lists '((recents . 20)
-                                (projects . 10))
+                                (projects . 10)
+                                (todos . 10))
 
    ;; True if the home buffer should respond to resize events. (default t)
    dotspacemacs-startup-buffer-responsive t
@@ -267,7 +269,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.8)
+   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.8) ;; TODO değiştir
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -636,7 +638,6 @@ before packages are loaded."
 
   ;; Switch window (ace-window)
   (global-set-key (kbd "M-m w w") 'ace-window)
-
   ;; Swap window
   (global-set-key (kbd "M-m w s") 'ace-swap-window)
 
@@ -648,8 +649,14 @@ before packages are loaded."
   (global-set-key (kbd "C-M-S-n") 'mc/skip-to-next-like-this)
   ;; Multiple cursors skip previous
   (global-set-key (kbd "C-M-S-p") 'mc/skip-to-previous-like-this)
+  ;; Multiple cursors unmark last
+  (global-set-key (kbd "M-N") 'mc/unmark-previous-like-this)
+  ;; Multiple cursors unmark first
+  (global-set-key (kbd "M-P") 'mc/unmark-next-like-this)
   ;; Multiple cursors add cursor on click
   (global-set-key (kbd "C-M-<mouse-1>") 'mc/add-cursor-on-click)
+  ;; Multiple cursors hide unmatched lines
+  (define-key mc/keymap (kbd "C-c C-c") 'mc-hide-unmatched-lines-mode)
 
   ;; Winner-undo
   (define-key (current-global-map) (kbd "M-u") 'winner-undo)
@@ -679,7 +686,7 @@ This function is called at the very end of Spacemacs initialization."
  '(company-quickhelp-color-foreground "#DCDCCC")
  '(custom-safe-themes
    (quote
-    ("8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "d6f04b6c269500d8a38f3fabadc1caa3c8fdf46e7e63ee15605af75a09d5441e" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+    ("2d1fe7c9007a5b76cea4395b0fc664d0c1cfd34bb4f1860300347cdad67fb2f9" "8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "d6f04b6c269500d8a38f3fabadc1caa3c8fdf46e7e63ee15605af75a09d5441e" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(diff-hl-flydiff-mode t)
  '(evil-want-Y-yank-to-eol nil)
  '(hl-todo-keyword-faces
