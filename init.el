@@ -101,10 +101,10 @@ This function should only modify configuration layer settings."
                  )
      react
      (version-control :variables
+                      version-control-diff-tool 'git-gutter
                       version-control-diff-side 'left
                       )
-     git
-     slack ;; TODO ayarla
+     slack ;; TODO: ayarla
      shell-scripts
      spotify
      themes-megapack
@@ -259,8 +259,7 @@ It should only modify the values of Spacemacs settings."
    ;; Press `SPC T n' to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(doom-spacegrey
-                         spacemacs-dark
-                         zenburn)
+                         spacemacs-dark)
 
    ;; Set the theme for the Spaceline. Supported themes are `spacemacs',
    ;; `all-the-icons', `custom', `doom', `vim-powerline' and `vanilla'. The
@@ -269,7 +268,8 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(spacemacs :separator wave :separator-scale 1.8) ;; TODO değiştir
+   dotspacemacs-mode-line-theme '(all-the-icons ;; TODO: incele
+                                  :separator arrow)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -506,7 +506,7 @@ It should only modify the values of Spacemacs settings."
    ;; Run `spacemacs/prettify-org-buffer' when
    ;; visiting README.org files of Spacemacs.
    ;; (default nil)
-   dotspacemacs-pretty-docs nil))
+   dotspacemacs-pretty-docs t))
 
 (defun dotspacemacs/user-env ()
   "Environment variables setup.
@@ -557,6 +557,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; Ranger
   (setq ranger-override-dired 'ranger)
+
+  ;; Google translate languages
+  (setq google-translate-default-source-language "en")
+  (setq google-translate-default-target-language "tr")
 
   ;; Flycheck setting for python
   (setq-default flycheck-flake8-maximum-line-length 88)
@@ -610,13 +614,13 @@ before packages are loaded."
   (spacemacs/declare-prefix "y" "yasnippet")
 
   ;; Expand snippets
-  (define-key yas-minor-mode-map (kbd "M-m y e") 'yas-expand)
+  (global-set-key (kbd "M-m y e") 'yas-expand)
 
   ;; Helm search snippets
-  (define-key yas-minor-mode-map (kbd "M-m y h") 'spacemacs/helm-yas)
+  (global-set-key (kbd "M-m y h") 'spacemacs/helm-yas)
 
   ;; Other window
-  (define-key (current-global-map) (kbd "M-o") 'other-window)
+  (global-set-key (kbd "M-o") 'other-window)
 
   ;; Enable highlight indentation guides in prog modes
   (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
@@ -639,7 +643,7 @@ before packages are loaded."
   (beacon-mode 1)
 
   ;; Jump to definition
-  (global-set-key (kbd "M-.") 'spacemacs/jump-to-definition) ;; TODO make unoverridable
+  (bind-key* "M-." 'spacemacs/jump-to-definition)
   ;; Pop marker back (return back from definition)
   (global-set-key (kbd "M-ç") 'xref-pop-marker-stack)
 
@@ -662,13 +666,33 @@ before packages are loaded."
   (global-set-key (kbd "C-S-P") 'mc/unmark-next-like-this)
   ;; Multiple cursors add cursor on click
   (global-set-key (kbd "C-M-<mouse-1>") 'mc/add-cursor-on-click)
-  ;; Multiple cursors hide unmatched lines
-  (define-key mc/keymap (kbd "C-c C-c") 'mc-hide-unmatched-lines-mode)
+  ;;Multiple cursors hide unmatched lines ;; FIXME: make unoverridable
+  ;;(with-eval-after-load 'multiple-cursors
+  ;;  (bind-key* "C-c C-c" 'mc-hide-unmatched-lines-mode)
+  ;; )
 
   ;; Winner-undo
-  (define-key (current-global-map) (kbd "M-u") 'winner-undo)
+  (global-set-key (kbd "M-u") 'winner-undo)
   ;; Winner-redo
-  (define-key (current-global-map) (kbd "M-U") 'winner-redo)
+  (global-set-key (kbd "M-U") 'winner-redo)
+
+  ;; Undo
+  (global-set-key (kbd "C-u") 'undo-tree-undo)
+  ;; Redo
+  (global-set-key (kbd "C-S-u") 'undo-tree-redo)
+
+  ;; Company helm
+  (with-eval-after-load 'company ;; TODO: C-h yap ve çakışmasın.
+    (define-key company-mode-map (kbd "C-.") 'helm-company)
+    )
+
+  ;; Move cursor center, top, bottom
+  (global-set-key (kbd "M-t") 'move-to-window-line-top-bottom)
+
+  ;; Modeline settings ;; TODO: setq olan versiyonlarını bul
+  (spaceline-toggle-all-the-icons-eyebrowse-workspace-off)
+  (spaceline-toggle-all-the-icons-buffer-size-off)
+  (spaceline-toggle-all-the-icons-modified-off)
 
   ;; Magit & magit todos
   (global-set-key (kbd "M-m g s") 'magit-status)
@@ -728,7 +752,6 @@ This function is called at the very end of Spacemacs initialization."
  '(custom-safe-themes
    (quote
     ("2d1fe7c9007a5b76cea4395b0fc664d0c1cfd34bb4f1860300347cdad67fb2f9" "8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "d6f04b6c269500d8a38f3fabadc1caa3c8fdf46e7e63ee15605af75a09d5441e" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
- '(diff-hl-flydiff-mode t)
  '(evil-want-Y-yank-to-eol nil)
  '(hl-todo-keyword-faces
    (quote
@@ -763,5 +786,10 @@ This function is called at the very end of Spacemacs initialization."
  '(default ((t (:background nil))))
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
- '(lsp-face-highlight-read ((t (:underline t :weight bold :background nil)))))
+ '(font-lock-function-name-face ((t (:foreground "LightGoldenrod1"))))
+ '(git-gutter-fr:modified ((t (:foreground "purple3" :background "purple3"))))
+ '(git-gutter-fr:added ((t (:foreground "green4" :background "green4"))))
+ '(git-gutter-fr:deleted ((t (:foreground "red4" :background "red4")))))
+ ;;'(lsp-face-highlight-read ((t (:underline t :weight bold :background nil))))
+ ;;'(lsp-face-highlight-textual ((t (:underline t :weight bold :background nil)))))
 )
