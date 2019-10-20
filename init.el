@@ -47,7 +47,6 @@ This function should only modify configuration layer settings."
                treemacs-lock-width t
                treemacs-use-git-mode 'deferred
                )
-
      (syntax-checking :variables
                       syntax-checking-use-original-bitmaps t
                       )
@@ -67,6 +66,7 @@ This function should only modify configuration layer settings."
              python-formatter 'black
              python-format-on-save t
              python-sort-imports-on-save t
+             python-fill-column 88
              )
      restclient
      (sql :variables
@@ -554,6 +554,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; Do not create lockfiles
   (setq create-lockfiles nil)
+  ;; Flycheck setting for python
+  (setq-default flycheck-flake8-maximum-line-length 88)
+
   )
 
 (defun dotspacemacs/user-load ()
