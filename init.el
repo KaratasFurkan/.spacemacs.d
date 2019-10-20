@@ -73,12 +73,10 @@ This function should only modify configuration layer settings."
           sql-capitalize-keywords t
           )
      (c-c++ :variables
-          c-c++-backend 'lsp-cquery
+          c-c++-backend 'lsp-ccls
           c++-enable-organize-includes-on-save t
           c-c++-enable-clang-format-on-save t
-          ;; c-c++-enable-google-style t ??
-          ;; c-c++-enable-google-newline t ??
-          c-c++-enable-auto-newline t ;; ??
+          c-c++-enable-auto-newline t
           )
      csv
      prettier
@@ -665,6 +663,23 @@ before packages are loaded."
   (define-key (current-global-map) (kbd "M-u") 'winner-undo)
   ;; Winner-redo
   (define-key (current-global-map) (kbd "M-U") 'winner-redo)
+  ;; C++ run like `python-shell-send-buffer'
+  (defun c++-run ()
+    (interactive)
+    (if (eq (get-buffer-window "*eshell*") nil)
+        (progn (split-window-right-and-focus)
+               (eshell)
+               (other-window -1))
+      )
+    (with-selected-window (get-buffer-window "*eshell*")
+      (eshell-return-to-prompt)
+      (insert "make")
+      (eshell-send-input)
+      )
+    )
+  (with-eval-after-load 'cc-mode
+    (bind-key "C-c C-c" 'c++-run c++-mode-map)
+    )
 
   )
 
