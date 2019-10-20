@@ -110,6 +110,7 @@ This function should only modify configuration layer settings."
      themes-megapack
      xkcd
      ipython-notebook
+     ranger
      ;;templates
      )
 
@@ -127,6 +128,7 @@ This function should only modify configuration layer settings."
      turkish
      beacon
      deadgrep
+     magit-todos
      )
 
    ;; A list of packages that cannot be updated.
@@ -552,6 +554,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; Do not create lockfiles
   (setq create-lockfiles nil)
+
+  ;; Ranger
+  (setq ranger-override-dired 'ranger)
+
   ;; Flycheck setting for python
   (setq-default flycheck-flake8-maximum-line-length 88)
 
@@ -663,6 +669,23 @@ before packages are loaded."
   (define-key (current-global-map) (kbd "M-u") 'winner-undo)
   ;; Winner-redo
   (define-key (current-global-map) (kbd "M-U") 'winner-redo)
+
+  ;; Magit & magit todos
+  (global-set-key (kbd "M-m g s") 'magit-status)
+  (defun helm-magit-todos-without-magit-status ()
+    (interactive)
+    (magit-status)
+    (bury-buffer)
+    (winner-undo)
+    (helm-magit-todos)
+    )
+  (global-set-key (kbd "M-m g t") 'helm-magit-todos-without-magit-status)
+  (with-eval-after-load 'magit
+    (magit-todos-mode t)
+    (magit-todos-branch-list-toggle)
+    (global-set-key (kbd "M-m g t") 'helm-magit-todos)
+    )
+
   ;; C++ run like `python-shell-send-buffer'
   (defun c++-run ()
     (interactive)
