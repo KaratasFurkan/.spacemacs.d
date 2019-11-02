@@ -112,6 +112,11 @@ This function should only modify configuration layer settings."
      ipython-notebook
      ranger
      ;;templates
+     epub
+     (elfeed :variables
+             elfeed-feeds '(("https://www.reddit.com/r/emacs/.rss" emacs subreddit)
+                            ("https://ytuce.maliayas.com/?type=rss" ytü bm haberleri))
+             )
      )
 
    ;; List of additional packages that will be installed without being
@@ -129,6 +134,7 @@ This function should only modify configuration layer settings."
      beacon
      deadgrep
      magit-todos
+     wttrin
      )
 
    ;; A list of packages that cannot be updated.
@@ -565,6 +571,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Flycheck setting for python
   (setq-default flycheck-flake8-maximum-line-length 88)
 
+  ;; wttr.in
+  (setq wttrin-default-cities '("Istanbul"))
   )
 
 (defun dotspacemacs/user-load ()
