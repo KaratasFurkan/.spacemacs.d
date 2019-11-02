@@ -647,8 +647,9 @@ before packages are loaded."
   (global-set-key (kbd "M-o") 'other-window)
 
   ;; Enable highlight indentation guides in prog modes
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
-  (add-hook 'prog-mode-hook 'highlight-indent-guides-auto-set-faces)
+  ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+  ;; (add-hook 'prog-mode-hook 'highlight-indent-guides-auto-set-faces)
+  (add-hook 'prog-mode-hook 'highlight-indentation-mode)
 
   ;; Scroll up/down rate
   (global-set-key (kbd "C-v") (lambda () (interactive) (scroll-up-command 15)))
