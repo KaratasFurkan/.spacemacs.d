@@ -61,8 +61,11 @@ This function should only modify configuration layer settings."
                       auto-completion-enable-snippets-in-popup t
                       auto-completion-enable-help-tooltip t
                       auto-completion-enable-sort-by-usage t
+                      auto-completion-idle-delay 0.1
+                      auto-completion-use-company-box t
                       )
      (python :variables
+             python-backend 'anaconda
              python-formatter 'black
              python-format-on-save t
              python-sort-imports-on-save t
@@ -76,7 +79,6 @@ This function should only modify configuration layer settings."
           c-c++-backend 'lsp-ccls
           c++-enable-organize-includes-on-save t
           c-c++-enable-clang-format-on-save t
-          c-c++-enable-auto-newline t
           )
      csv
      prettier
@@ -659,7 +661,7 @@ before packages are loaded."
   (global-subword-mode 1)
 
   ;; Jump word
-  (global-set-key (kbd "M-j") 'avy-goto-word-or-subword-1)
+  (bind-key* "M-j" 'avy-goto-word-or-subword-1)
 
   ;; Jump line
   (global-set-key (kbd "M-l") 'avy-goto-line)
@@ -740,13 +742,17 @@ before packages are loaded."
       )
     (with-selected-window (get-buffer-window "*eshell*")
       (eshell-return-to-prompt)
-      (insert "make")
+      (insert "make -B")
       (eshell-send-input)
       )
     )
   (with-eval-after-load 'cc-mode
     (bind-key "C-c C-c" 'c++-run c++-mode-map)
+    (bind-key "C-c C-c" 'c++-run c-mode-map)
     )
+
+   ;; Disable evil mode
+  (evil-mode -1)
 
   )
 
@@ -771,7 +777,7 @@ This function is called at the very end of Spacemacs initialization."
  '(company-quickhelp-color-foreground "#DCDCCC")
  '(custom-safe-themes
    (quote
-    ("2d1fe7c9007a5b76cea4395b0fc664d0c1cfd34bb4f1860300347cdad67fb2f9" "8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "d6f04b6c269500d8a38f3fabadc1caa3c8fdf46e7e63ee15605af75a09d5441e" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+    ("728eda145ad16686d4bbb8e50d540563573592013b10c3e2defc493f390f7d83" "7d56fb712ad356e2dacb43af7ec255c761a590e1182fe0537e1ec824b7897357" "2d1fe7c9007a5b76cea4395b0fc664d0c1cfd34bb4f1860300347cdad67fb2f9" "8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "d6f04b6c269500d8a38f3fabadc1caa3c8fdf46e7e63ee15605af75a09d5441e" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(evil-want-Y-yank-to-eol nil)
  '(hl-todo-keyword-faces
    (quote
