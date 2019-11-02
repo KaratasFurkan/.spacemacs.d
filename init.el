@@ -117,6 +117,11 @@ This function should only modify configuration layer settings."
              elfeed-feeds '(("https://www.reddit.com/r/emacs/.rss" emacs subreddit)
                             ("https://ytuce.maliayas.com/?type=rss" ytü bm haberleri))
              )
+     pdf
+     (org :variables
+          org-projectile-file "TODOs.org"
+          )
+     latex
      )
 
    ;; List of additional packages that will be installed without being
