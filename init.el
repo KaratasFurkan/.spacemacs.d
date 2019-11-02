@@ -279,8 +279,7 @@ It should only modify the values of Spacemacs settings."
    ;; refer to the DOCUMENTATION.org for more info on how to create your own
    ;; spaceline theme. Value can be a symbol or list with additional properties.
    ;; (default '(spacemacs :separator wave :separator-scale 1.5))
-   dotspacemacs-mode-line-theme '(all-the-icons ;; TODO: incele
-                                  :separator arrow)
+   dotspacemacs-mode-line-theme '(doom)
 
    ;; If non-nil the cursor color matches the state color in GUI Emacs.
    ;; (default t)
@@ -576,6 +575,18 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Flycheck setting for python
   (setq-default flycheck-flake8-maximum-line-length 88)
 
+  ;; Modeline settings
+  ;;(setq spaceline-all-the-icons-eyebrowse-workspace-p nil)
+  ;;(setq spaceline-all-the-icons-buffer-size-p nil)
+  ;;(setq spaceline-all-the-icons-modified-p nil)
+  ;;(setq spaceline-all-the-icons-hud-p nil)
+  ;;(setq spaceline-all-the-icons-window-number-always-visible t)
+  ;;(setq spaceline-all-the-icons-clock-always-visible nil)
+  ;;(setq doom-modeline-buffer-file-name-style 'relative-from-project)
+  (setq doom-modeline-buffer-encoding nil)
+  (setq doom-modeline-buffer-modification-icon nil)
+  (setq doom-modeline-vcs-max-length 20)
+
   ;; wttr.in
   (setq wttrin-default-cities '("Istanbul"))
   )
@@ -702,11 +713,6 @@ before packages are loaded."
   ;; Move cursor center, top, bottom
   (global-set-key (kbd "M-t") 'move-to-window-line-top-bottom)
 
-  ;; Modeline settings ;; TODO: setq olan versiyonlarını bul
-  (spaceline-toggle-all-the-icons-eyebrowse-workspace-off)
-  (spaceline-toggle-all-the-icons-buffer-size-off)
-  (spaceline-toggle-all-the-icons-modified-off)
-
   ;; Magit & magit todos
   (global-set-key (kbd "M-m g s") 'magit-status)
   (defun helm-magit-todos-without-magit-status ()
@@ -805,4 +811,5 @@ This function is called at the very end of Spacemacs initialization."
  '(git-gutter-fr:deleted ((t (:foreground "red4" :background "red4")))))
  ;;'(lsp-face-highlight-read ((t (:underline t :weight bold :background nil))))
  ;;'(lsp-face-highlight-textual ((t (:underline t :weight bold :background nil)))))
+ '(mode-line ((t (:background "#262b35"))))
 )
