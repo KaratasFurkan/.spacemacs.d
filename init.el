@@ -124,6 +124,10 @@ This function should only modify configuration layer settings."
           org-projectile-file "TODOs.org"
           )
      latex
+     shell
+     (spell-checking :variables
+                     spell-checking-enable-by-default nil
+                     enable-flyspell-auto-completion t)
      )
 
    ;; List of additional packages that will be installed without being
@@ -588,9 +592,16 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq doom-modeline-buffer-encoding nil)
   (setq doom-modeline-buffer-modification-icon nil)
   (setq doom-modeline-vcs-max-length 20)
+  (setq doom-modeline-icon t) ;; It should be declared explicitly when using
+                              ;; emacs as a deamon
 
   ;; wttr.in
   (setq wttrin-default-cities '("Istanbul"))
+
+  ;; Spell Checking
+  (setq ispell-program-name "hunspell")
+  (setq ispell-dictionary "tr_TR")
+
   )
 
 (defun dotspacemacs/user-load ()
@@ -726,14 +737,15 @@ before packages are loaded."
     (helm-magit-todos)
     )
   (global-set-key (kbd "M-m g t") 'helm-magit-todos-without-magit-status)
-  (with-eval-after-load 'magit
-    (magit-todos-mode t)
-    (magit-todos-branch-list-toggle)
-    (global-set-key (kbd "M-m g t") 'helm-magit-todos)
-    )
+  ;;(with-eval-after-load 'magit
+  ;;  (magit-todos-mode t)
+  ;;  (magit-todos-branch-list-toggle)
+  ;;  (global-set-key (kbd "M-m g t") 'helm-magit-todos)
+  ;;  )
 
   ;; C++ run like `python-shell-send-buffer'
   (defun c++-run ()
+    "C++ run like `python-shell-send-buffer'"
     (interactive)
     (if (eq (get-buffer-window "*eshell*") nil)
         (progn (split-window-right-and-focus)
@@ -746,9 +758,17 @@ before packages are loaded."
       (eshell-send-input)
       )
     )
+
+  (defun c-arrow()
+    "Insert arrow"
+    (interactive)
+    (insert " -> ")
+    )
+
   (with-eval-after-load 'cc-mode
     (bind-key "C-c C-c" 'c++-run c++-mode-map)
     (bind-key "C-c C-c" 'c++-run c-mode-map)
+    (bind-key "C-c C-a" 'c-arrow c-mode-map)
     )
 
    ;; Disable evil mode
@@ -801,7 +821,7 @@ This function is called at the very end of Spacemacs initialization."
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(package-selected-packages
    (quote
-    (helm-rg yatemplate rjsx-mode import-js grizzl web-mode tagedit slim-mode scss-mode sass-mode pug-mode impatient-mode htmlize helm-css-scss haml-mode emmet-mode company-web web-completion-data web-beautify prettier-js nodejs-repl livid-mode skewer-mode simple-httpd json-navigator hierarchy json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern tern csv-mode sqlup-mode beacon yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key volatile-highlights uuidgen use-package unfill turkish treemacs-projectile toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restclient-helm restart-emacs request rainbow-delimiters pytest pyenv-mode py-isort popwin pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer org-plus-contrib org-bullets open-junk-file ob-restclient ob-http nameless mwim move-text macrostep lorem-ipsum live-py-mode link-hint indent-guide importmagic hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio fuzzy font-lock+ flycheck-pos-tip flycheck-package flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish devdocs define-word cython-mode company-statistics company-restclient company-quickhelp company-anaconda column-enforce-mode clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
+    (flyspell-popup flyspell-correct-helm flyspell-correct auto-dictionary helm-rg yatemplate rjsx-mode import-js grizzl web-mode tagedit slim-mode scss-mode sass-mode pug-mode impatient-mode htmlize helm-css-scss haml-mode emmet-mode company-web web-completion-data web-beautify prettier-js nodejs-repl livid-mode skewer-mode simple-httpd json-navigator hierarchy json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern tern csv-mode sqlup-mode beacon yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key volatile-highlights uuidgen use-package unfill turkish treemacs-projectile toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restclient-helm restart-emacs request rainbow-delimiters pytest pyenv-mode py-isort popwin pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer org-plus-contrib org-bullets open-junk-file ob-restclient ob-http nameless mwim move-text macrostep lorem-ipsum live-py-mode link-hint indent-guide importmagic hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio fuzzy font-lock+ flycheck-pos-tip flycheck-package flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish devdocs define-word cython-mode company-statistics company-restclient company-quickhelp company-anaconda column-enforce-mode clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
  '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e"))))
 (custom-set-faces
