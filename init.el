@@ -771,8 +771,18 @@ before packages are loaded."
     (bind-key "C-c C-a" 'c-arrow c-mode-map)
     )
 
-   ;; Disable evil mode
+  ;; Disable evil mode
   (evil-mode -1)
+
+  ;; Modeline responsive buffer-file-name-style
+  (add-hook
+   'window-configuration-change-hook
+   (lambda ()
+     (interactive)
+     (if (> (count-windows) 1)
+          (setq doom-modeline-buffer-file-name-style 'truncate-except-project)
+        (setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
+        )))
 
   )
 
