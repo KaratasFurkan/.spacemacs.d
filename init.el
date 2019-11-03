@@ -784,6 +784,14 @@ before packages are loaded."
         (setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
         )))
 
+  ;; Emacs-like keybindigs for ranger
+  (with-eval-after-load 'ranger
+    (define-key ranger-mode-map (kbd "n") 'ranger-next-file)
+    (define-key ranger-mode-map (kbd "p") 'ranger-prev-file)
+    (define-key ranger-mode-map (kbd "f") 'ranger-find-file)
+    (define-key ranger-mode-map (kbd "b") 'ranger-up-directory)
+    )
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
