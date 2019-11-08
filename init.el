@@ -789,10 +789,14 @@ before packages are loaded."
 
   ;; Emacs-like keybindigs for ranger
   (with-eval-after-load 'ranger
-    (define-key ranger-mode-map (kbd "n") 'ranger-next-file)
-    (define-key ranger-mode-map (kbd "p") 'ranger-prev-file)
-    (define-key ranger-mode-map (kbd "f") 'ranger-find-file)
-    (define-key ranger-mode-map (kbd "b") 'ranger-up-directory)
+    (bind-key "n" 'ranger-next-file ranger-mode-map)
+    (bind-key "p" 'ranger-prev-file ranger-mode-map)
+    (bind-key "f" 'ranger-find-file ranger-mode-map)
+    (bind-key "b" 'ranger-up-directory ranger-mode-map)
+    (bind-key "C-n" 'ranger-next-file ranger-mode-map)
+    (bind-key "C-p" 'ranger-prev-file ranger-mode-map) ;; TODO: override etmiyor.
+    (bind-key "C-f" 'ranger-find-file ranger-mode-map)
+    (bind-key "C-b" 'ranger-up-directory ranger-mode-map)
     )
 
   )
