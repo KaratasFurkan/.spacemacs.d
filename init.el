@@ -124,6 +124,8 @@ This function should only modify configuration layer settings."
      pdf
      (org :variables
           org-projectile-file "TODOs.org"
+          org-enable-reveal-js-support t
+          org-enable-bootstrap-support t
           )
      latex
      shell
@@ -141,7 +143,6 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages
    '(
-     yasnippet-snippets
      highlight-indent-guides
      turkish
      beacon
@@ -604,6 +605,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq ispell-program-name "hunspell")
   (setq ispell-dictionary "tr_TR")
 
+  (setq flycheck-idle-change-delay 4)
+
   )
 
 (defun dotspacemacs/user-load ()
@@ -631,10 +634,6 @@ before packages are loaded."
 
   ;; Yazı tarayıp başka bir şey yazınca taranmış yazıyı sil
   (delete-selection-mode 1)
-
-  ;; Clear ile eshelli temizle
-  (defun eshell/clear ()
-    (let ((eshell-buffer-maximum-lines 0)) (eshell-truncate-buffer)))
 
   ;; Yeni açılan windowa direk geçiş yap
   (global-set-key (kbd "C-x 2") 'split-window-below-and-focus)
@@ -746,7 +745,6 @@ before packages are loaded."
   ;;  (global-set-key (kbd "M-m g t") 'helm-magit-todos)
   ;;  )
 
-  ;; C++ run like `python-shell-send-buffer'
   (defun c++-run ()
     "C++ run like `python-shell-send-buffer'"
     (interactive)
@@ -799,6 +797,12 @@ before packages are loaded."
     (bind-key "C-b" 'ranger-up-directory ranger-mode-map)
     )
 
+  ;; Initialize snippets
+  (load "yasnippet-snippets")
+
+  ;; Unbind eshell/clear
+  (add-hook 'eshell-mode-hook (local-unset-key (kbd "C-l")))
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -824,6 +828,7 @@ This function is called at the very end of Spacemacs initialization."
    (quote
     ("728eda145ad16686d4bbb8e50d540563573592013b10c3e2defc493f390f7d83" "7d56fb712ad356e2dacb43af7ec255c761a590e1182fe0537e1ec824b7897357" "2d1fe7c9007a5b76cea4395b0fc664d0c1cfd34bb4f1860300347cdad67fb2f9" "8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "d6f04b6c269500d8a38f3fabadc1caa3c8fdf46e7e63ee15605af75a09d5441e" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(evil-want-Y-yank-to-eol nil)
+ '(helm-completion-style (quote emacs))
  '(hl-todo-keyword-faces
    (quote
     (("TODO" . "#dc752f")
