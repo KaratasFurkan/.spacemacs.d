@@ -65,7 +65,7 @@ This function should only modify configuration layer settings."
                       auto-completion-use-company-box t
                       )
      (python :variables
-             python-backend 'anaconda
+             ;;python-backend 'anaconda
              python-formatter 'black
              python-format-on-save t
              python-sort-imports-on-save t
@@ -92,7 +92,9 @@ This function should only modify configuration layer settings."
            json-fmt-tool 'prettier
            json-fmt-on-save t
            )
-     lsp
+     (lsp :variables
+          lsp-remap-xref-keybindings t
+          )
      import-js
      (javascript :variables
                  node-add-modules-path t
@@ -682,6 +684,7 @@ before packages are loaded."
 
   ;; Jump to definition
   (bind-key* "M-." 'spacemacs/jump-to-definition)
+  (bind-key* "M-r" 'xref-find-references)
   ;; Pop marker back (return back from definition)
   (global-set-key (kbd "M-ç") 'xref-pop-marker-stack)
 
@@ -855,6 +858,9 @@ This function is called at the very end of Spacemacs initialization."
  '(git-gutter-fr:deleted ((t (:foreground "red4" :background "red4"))))
  '(git-gutter-fr:modified ((t (:foreground "purple3" :background "purple3"))))
  '(highlight-indentation-face ((t (:inherit nil :background "#2f343f"))))
+ '(lsp-face-highlight-read ((t (:underline t :weight bold :background nil :foreground nil))))
+ '(lsp-face-highlight-write ((t (:underline t :weight bold :background nil :foreground nil))))
+ '(lsp-face-highlight-textual ((t (:underline t :weight bold :background nil :foreground nil))))
  '(mode-line ((t (:background "#262b35"))))
  '(sp-show-pair-match-face ((t (:background nil)))))
 )
