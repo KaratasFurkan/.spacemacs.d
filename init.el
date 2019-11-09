@@ -128,10 +128,13 @@ This function should only modify configuration layer settings."
           org-enable-bootstrap-support t
           )
      latex
-     shell
+     (shell :variables
+            shell-default-shell 'vterm
+            )
      (spell-checking :variables
                      spell-checking-enable-by-default nil
-                     enable-flyspell-auto-completion t)
+                     enable-flyspell-auto-completion t
+                     )
      )
 
    ;; List of additional packages that will be installed without being
@@ -802,6 +805,13 @@ before packages are loaded."
 
   ;; Unbind eshell/clear
   (add-hook 'eshell-mode-hook (local-unset-key (kbd "C-l")))
+
+  ;; Shell settings
+  (bind-key* (kbd "M-t") 'spacemacs/default-pop-shell)
+  (with-eval-after-load 'vterm
+    (define-key vterm-mode-map (kbd "C-c C-e") 'vterm-copy-mode)
+    (define-key vterm-copy-mode-map (kbd "C-c C-e") 'vterm-copy-mode)
+    )
 
   )
 
