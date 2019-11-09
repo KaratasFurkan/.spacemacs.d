@@ -657,7 +657,7 @@ before packages are loaded."
 
   ;; Expand snippets
   (global-set-key (kbd "M-m y e") 'yas-expand)
-
+  (global-set-key (kbd "M-ı") 'yas-expand)
   ;; Helm search snippets
   (global-set-key (kbd "M-m y h") 'spacemacs/helm-yas)
 
@@ -731,7 +731,7 @@ before packages are loaded."
     )
 
   ;; Move cursor center, top, bottom
-  (global-set-key (kbd "M-t") 'move-to-window-line-top-bottom)
+  (global-set-key (kbd "C-M-l") 'move-to-window-line-top-bottom)
 
   ;; Magit & magit todos
   (global-set-key (kbd "M-m g s") 'magit-status)
@@ -807,10 +807,22 @@ before packages are loaded."
   ;; Unbind eshell/clear
   (add-hook 'eshell-mode-hook (local-unset-key (kbd "C-l")))
 
+  ;; Search symbol at point
+  (global-set-key (kbd "M-s") 'isearch-forward-symbol-at-point)
+
   ;; Use shell-like backspace C-h, rebind help to C-?
   (define-key key-translation-map [?\C-h] [?\C-?])
   (bind-key* (kbd "C-?") 'help-command)
 
+  ;; Helm swoop as an alternative to isearch
+  (bind-key* (kbd "C-M-s") 'spacemacs/helm-swoop-region-or-symbol)
+  (with-eval-after-load 'helm-swoop
+    ;; Keybindings like helm-ag-edit-mode
+    (define-key helm-swoop-edit-map (kbd "C-c C-c") 'helm-swoop--edit-complete)
+    (define-key helm-swoop-edit-map (kbd "C-c C-k") 'helm-swoop--edit-cancel)
+    ;; Move up and down like isearch
+    (define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
+    (define-key helm-swoop-map (kbd "C-s") 'helm-next-line))
 
   (global-hardcore-mode)
 
