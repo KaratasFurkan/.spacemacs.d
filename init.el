@@ -152,6 +152,7 @@ This function should only modify configuration layer settings."
      deadgrep
      magit-todos
      wttrin
+     hardcore-mode
      )
 
    ;; A list of packages that cannot be updated.
@@ -805,6 +806,13 @@ before packages are loaded."
 
   ;; Unbind eshell/clear
   (add-hook 'eshell-mode-hook (local-unset-key (kbd "C-l")))
+
+  ;; Use shell-like backspace C-h, rebind help to C-?
+  (define-key key-translation-map [?\C-h] [?\C-?])
+  (bind-key* (kbd "C-?") 'help-command)
+
+
+  (global-hardcore-mode)
 
   ;; Shell settings
   (bind-key* (kbd "M-t") 'spacemacs/default-pop-shell)
