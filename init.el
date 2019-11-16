@@ -616,6 +616,12 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Flycheck delay
   (setq flycheck-idle-change-delay 5)
 
+  ;; Expand-region subword support
+  (setq expand-region-subword-enabled t)
+
+  ;; Recenter positions values (C-l)
+  (setq recenter-positions '(middle top 0.2 0.8 bottom))
+
   )
 
 (defun dotspacemacs/user-load ()
