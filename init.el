@@ -65,7 +65,7 @@ This function should only modify configuration layer settings."
                       auto-completion-use-company-box t
                       )
      (python :variables
-             ;;python-backend 'anaconda
+             python-lsp-server 'mspyls
              python-formatter 'black
              python-format-on-save t
              python-sort-imports-on-save t
@@ -135,6 +135,8 @@ This function should only modify configuration layer settings."
                      spell-checking-enable-by-default nil
                      enable-flyspell-auto-completion t
                      )
+     (java :variables
+           java-backend 'meghanada) ;;TODO: meghanada ya bozuk ya da kötü
      )
 
    ;; List of additional packages that will be installed without being
@@ -372,7 +374,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
    ;; the commands bound to the current keystroke sequence. (default 0.4)
-   dotspacemacs-which-key-delay 0.4
+   dotspacemacs-which-key-delay 0.3
 
    ;; Which-key frame position. Possible values are `right', `bottom' and
    ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
@@ -582,6 +584,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; Ranger
   (setq ranger-override-dired 'ranger)
+  (setq ranger-preview-file nil)
 
   ;; Google translate languages
   (setq google-translate-default-source-language "en")
@@ -599,7 +602,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;;(setq spaceline-all-the-icons-clock-always-visible nil)
   ;;(setq doom-modeline-buffer-file-name-style 'relative-from-project)
   (setq doom-modeline-buffer-encoding nil)
-  (setq doom-modeline-buffer-modification-icon nil)
   (setq doom-modeline-vcs-max-length 20)
   (setq doom-modeline-icon t) ;; It should be declared explicitly when using
                               ;; emacs as a deamon
@@ -611,7 +613,8 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq ispell-program-name "hunspell")
   (setq ispell-dictionary "tr_TR")
 
-  (setq flycheck-idle-change-delay 4)
+  ;; Flycheck delay
+  (setq flycheck-idle-change-delay 5)
 
   )
 
@@ -858,7 +861,7 @@ This function is called at the very end of Spacemacs initialization."
  '(company-quickhelp-color-foreground "#DCDCCC")
  '(custom-safe-themes
    (quote
-    ("728eda145ad16686d4bbb8e50d540563573592013b10c3e2defc493f390f7d83" "7d56fb712ad356e2dacb43af7ec255c761a590e1182fe0537e1ec824b7897357" "2d1fe7c9007a5b76cea4395b0fc664d0c1cfd34bb4f1860300347cdad67fb2f9" "8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "d6f04b6c269500d8a38f3fabadc1caa3c8fdf46e7e63ee15605af75a09d5441e" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+    ("3d5ef3d7ed58c9ad321f05360ad8a6b24585b9c49abcee67bdcbb0fe583a6950" "728eda145ad16686d4bbb8e50d540563573592013b10c3e2defc493f390f7d83" "7d56fb712ad356e2dacb43af7ec255c761a590e1182fe0537e1ec824b7897357" "2d1fe7c9007a5b76cea4395b0fc664d0c1cfd34bb4f1860300347cdad67fb2f9" "8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "d6f04b6c269500d8a38f3fabadc1caa3c8fdf46e7e63ee15605af75a09d5441e" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(evil-want-Y-yank-to-eol nil)
  '(helm-completion-style (quote emacs))
  '(hl-todo-keyword-faces
@@ -883,7 +886,7 @@ This function is called at the very end of Spacemacs initialization."
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(package-selected-packages
    (quote
-    (flyspell-popup flyspell-correct-helm flyspell-correct auto-dictionary helm-rg yatemplate rjsx-mode import-js grizzl web-mode tagedit slim-mode scss-mode sass-mode pug-mode impatient-mode htmlize helm-css-scss haml-mode emmet-mode company-web web-completion-data web-beautify prettier-js nodejs-repl livid-mode skewer-mode simple-httpd json-navigator hierarchy json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern tern csv-mode sqlup-mode beacon yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key volatile-highlights uuidgen use-package unfill turkish treemacs-projectile toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restclient-helm restart-emacs request rainbow-delimiters pytest pyenv-mode py-isort popwin pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer org-plus-contrib org-bullets open-junk-file ob-restclient ob-http nameless mwim move-text macrostep lorem-ipsum live-py-mode link-hint indent-guide importmagic hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio fuzzy font-lock+ flycheck-pos-tip flycheck-package flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish devdocs define-word cython-mode company-statistics company-restclient company-quickhelp company-anaconda column-enforce-mode clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
+    (w3m dap-mode bui tree-mode ace-mc flyspell-popup flyspell-correct-helm flyspell-correct auto-dictionary helm-rg yatemplate rjsx-mode import-js grizzl web-mode tagedit slim-mode scss-mode sass-mode pug-mode impatient-mode htmlize helm-css-scss haml-mode emmet-mode company-web web-completion-data web-beautify prettier-js nodejs-repl livid-mode skewer-mode simple-httpd json-navigator hierarchy json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern tern csv-mode sqlup-mode beacon yasnippet-snippets yapfify ws-butler writeroom-mode winum which-key volatile-highlights uuidgen use-package unfill turkish treemacs-projectile toc-org symon symbol-overlay string-inflection spaceline-all-the-icons restclient-helm restart-emacs request rainbow-delimiters pytest pyenv-mode py-isort popwin pippel pipenv pip-requirements persp-mode pcre2el password-generator paradox overseer org-plus-contrib org-bullets open-junk-file ob-restclient ob-http nameless mwim move-text macrostep lorem-ipsum live-py-mode link-hint indent-guide importmagic hungry-delete hl-todo highlight-parentheses highlight-numbers highlight-indentation highlight-indent-guides helm-xref helm-themes helm-swoop helm-pydoc helm-purpose helm-projectile helm-mode-manager helm-make helm-flx helm-descbinds helm-company helm-c-yasnippet helm-ag google-translate golden-ratio fuzzy font-lock+ flycheck-pos-tip flycheck-package flx-ido fill-column-indicator fancy-battery eyebrowse expand-region evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-textobj-line evil-surround evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state evil-lion evil-indent-plus evil-iedit-state evil-goggles evil-exchange evil-escape evil-ediff evil-cleverparens evil-args evil-anzu eval-sexp-fu elisp-slime-nav editorconfig dumb-jump dotenv-mode doom-modeline diminish devdocs define-word cython-mode company-statistics company-restclient company-quickhelp company-anaconda column-enforce-mode clean-aindent-mode centered-cursor-mode blacken auto-yasnippet auto-highlight-symbol auto-compile aggressive-indent ace-link ace-jump-helm-line ac-ispell)))
  '(paradox-github-token t)
  '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e"))))
 (custom-set-faces
@@ -892,6 +895,7 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:background nil))))
+ '(company-template-field ((t (:inherit region))))
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
  '(doom-modeline-buffer-path ((t (:inherit (bold font-lock-comment-face)))))
@@ -901,8 +905,8 @@ This function is called at the very end of Spacemacs initialization."
  '(git-gutter-fr:modified ((t (:foreground "purple3" :background "purple3"))))
  '(highlight-indentation-face ((t (:inherit nil :background "#2f343f"))))
  '(lsp-face-highlight-read ((t (:underline t :weight bold :background nil :foreground nil))))
- '(lsp-face-highlight-write ((t (:underline t :weight bold :background nil :foreground nil))))
  '(lsp-face-highlight-textual ((t (:underline t :weight bold :background nil :foreground nil))))
+ '(lsp-face-highlight-write ((t (:underline t :weight bold :background nil :foreground nil))))
  '(mode-line ((t (:background "#262b35"))))
  '(sp-show-pair-match-face ((t (:background nil))))
  '(yas-field-highlight-face ((t (:inherit region)))))
