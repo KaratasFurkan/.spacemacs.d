@@ -153,6 +153,8 @@ This function should only modify configuration layer settings."
      magit-todos
      wttrin
      hardcore-mode
+     ace-mc
+     w3m
      )
 
    ;; A list of packages that cannot be updated.
