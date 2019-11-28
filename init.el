@@ -65,7 +65,8 @@ This function should only modify configuration layer settings."
                       auto-completion-use-company-box t
                       )
      (python :variables
-             python-lsp-server 'mspyls
+             ;;python-backend 'anaconda
+             python-lsp-server 'pyls
              python-formatter 'black
              python-format-on-save t
              python-sort-imports-on-save t
@@ -76,9 +77,9 @@ This function should only modify configuration layer settings."
           sql-capitalize-keywords t
           )
      (c-c++ :variables
-          c-c++-backend 'lsp-ccls
-          c++-enable-organize-includes-on-save t
-          c-c++-enable-clang-format-on-save t
+            c-c++-backend 'lsp-clangd
+            c++-enable-organize-includes-on-save t
+            c-c++-enable-clang-format-on-save t
           )
      csv
      prettier
@@ -87,6 +88,7 @@ This function should only modify configuration layer settings."
            scss-enable-lsp t
            css-enable-lsp t
            less-enable-lsp t
+           html-enable-lsp t
            )
      (json :variables
            json-fmt-tool 'prettier
@@ -135,8 +137,6 @@ This function should only modify configuration layer settings."
                      spell-checking-enable-by-default nil
                      enable-flyspell-auto-completion t
                      )
-     (java :variables
-           java-backend 'meghanada) ;;TODO: meghanada ya bozuk ya da kötü
      )
 
    ;; List of additional packages that will be installed without being
@@ -157,6 +157,7 @@ This function should only modify configuration layer settings."
      hardcore-mode
      ace-mc
      w3m
+     eglot
      )
 
    ;; A list of packages that cannot be updated.
@@ -620,7 +621,13 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq expand-region-subword-enabled t)
 
   ;; Recenter positions values (C-l)
-  (setq recenter-positions '(middle top 0.2 0.8 bottom))
+  (setq recenter-positions '(middle 0.2 top 0.8 bottom))
+
+  ;; Window numbering by frame (not global)
+  (setq winum-scope 'frame-local)
+
+  ;; Exclude tmp and .emacs.d directories from recentf
+  (setq recentf-exclude '("/\\.emacs\\.d/" "^/tmp/"))
 
   )
 
@@ -770,7 +777,7 @@ before packages are loaded."
       )
     (with-selected-window (get-buffer-window "*eshell*")
       (eshell-return-to-prompt)
-      (insert "make -B")
+      (insert "make -B -s")
       (eshell-send-input)
       )
     )
@@ -915,6 +922,7 @@ This function is called at the very end of Spacemacs initialization."
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
  '(doom-modeline-buffer-path ((t (:inherit (bold font-lock-comment-face)))))
  '(font-lock-function-name-face ((t (:foreground "LightGoldenrod1"))))
+ '(font-lock-string-face ((t (:foreground "PeachPuff3"))))
  '(git-gutter-fr:added ((t (:foreground "green4" :background "green4"))))
  '(git-gutter-fr:deleted ((t (:foreground "red4" :background "red4"))))
  '(git-gutter-fr:modified ((t (:foreground "purple3" :background "purple3"))))
