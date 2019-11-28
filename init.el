@@ -328,7 +328,7 @@ It should only modify the values of Spacemacs settings."
 
    ;; Major mode leader key accessible in `emacs state' and `insert state'.
    ;; (default "C-M-m")
-   dotspacemacs-major-mode-emacs-leader-key "C-j"
+   dotspacemacs-major-mode-emacs-leader-key "C-M-m"
 
    ;; These variables control whether separate commands are bound in the GUI to
    ;; the key pairs `C-i', `TAB' and `C-m', `RET'.
@@ -668,7 +668,7 @@ before packages are loaded."
 
   ;; Expand snippets
   (global-set-key (kbd "M-m y e") 'yas-expand)
-  (global-set-key (kbd "M-ı") 'yas-expand)
+  (global-set-key (kbd "C-j") 'yas-expand)
   ;; Helm search snippets
   (global-set-key (kbd "M-m y h") 'spacemacs/helm-yas)
 
@@ -842,6 +842,15 @@ before packages are loaded."
   (with-eval-after-load 'vterm
     (define-key vterm-mode-map (kbd "C-c C-e") 'vterm-copy-mode)
     (define-key vterm-copy-mode-map (kbd "C-c C-e") 'vterm-copy-mode)
+    )
+
+  ;; Unbind python C-j (newline-and-indent) to use it as yas-expand
+  (add-hook 'python-mode-hook (local-unset-key (kbd "C-j")))
+  (with-eval-after-load 'org
+    ;; Unbind org C-j (newline-and-indent) to use it as yas-expand
+    (local-unset-key (kbd "C-j"))
+    ;; Edit source code blocks with more familiar keybinding "C-c C-e""
+    (define-key org-mode-map (kbd "C-c C-e") 'org-edit-special)
     )
 
   )
