@@ -136,6 +136,8 @@ This function should only modify configuration layer settings."
                      spell-checking-enable-by-default nil
                      enable-flyspell-auto-completion t
                      )
+     csharp
+     dotnet
      )
 
    ;; List of additional packages that will be installed without being
@@ -624,6 +626,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Exclude tmp and .emacs.d directories from recentf
   (setq recentf-exclude '("/\\.emacs\\.d/" "^/tmp/"))
 
+  ;; Dotnet prefix key
+  (setq dotnet-mode-keymap-prefix (kbd "C-c C-c"))
+
   )
 
 (defun dotspacemacs/user-load ()
@@ -841,6 +846,12 @@ before packages are loaded."
     (local-unset-key (kbd "C-j"))
     ;; Edit source code blocks with more familiar keybinding "C-c C-e""
     (define-key org-mode-map (kbd "C-c C-e") 'org-edit-special)
+    )
+
+  ;; Dotnet mode
+  (add-hook 'csharp-mode-hook 'dotnet-mode)
+  (with-eval-after-load 'csharp-mode
+    (spacemacs/toggle-automatic-symbol-highlight-on)
     )
 
   )
