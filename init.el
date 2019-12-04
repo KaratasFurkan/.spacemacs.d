@@ -682,7 +682,7 @@ before packages are loaded."
 
   ;; Expand snippets
   (global-set-key (kbd "M-m y e") 'yas-expand)
-  (global-set-key (kbd "C-j") 'yas-expand)
+  (bind-key* "C-j" 'yas-expand)
   ;; Helm search snippets
   (global-set-key (kbd "M-m y h") 'spacemacs/helm-yas)
 
@@ -846,11 +846,7 @@ before packages are loaded."
     (define-key vterm-copy-mode-map (kbd "C-c C-e") 'vterm-copy-mode)
     )
 
-  ;; Unbind python C-j (newline-and-indent) to use it as yas-expand
-  (add-hook 'python-mode-hook (local-unset-key (kbd "C-j")))
   (with-eval-after-load 'org
-    ;; Unbind org C-j (newline-and-indent) to use it as yas-expand
-    (local-unset-key (kbd "C-j"))
     ;; Edit source code blocks with more familiar keybinding "C-c C-e""
     (define-key org-mode-map (kbd "C-c C-e") 'org-edit-special)
     )
