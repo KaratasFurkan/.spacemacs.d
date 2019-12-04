@@ -116,7 +116,6 @@ This function should only modify configuration layer settings."
      themes-megapack
      xkcd
      ipython-notebook
-     ranger
      ;;templates
      epub
      (elfeed :variables
@@ -583,10 +582,6 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Do not create lockfiles
   (setq create-lockfiles nil)
 
-  ;; Ranger
-  (setq ranger-override-dired 'ranger)
-  (setq ranger-preview-file nil)
-
   ;; Google translate languages
   (setq google-translate-default-source-language "en")
   (setq google-translate-default-target-language "tr")
@@ -806,18 +801,6 @@ before packages are loaded."
           (setq doom-modeline-buffer-file-name-style 'truncate-except-project)
         (setq doom-modeline-buffer-file-name-style 'truncate-upto-project)
         )))
-
-  ;; Emacs-like keybindigs for ranger
-  (with-eval-after-load 'ranger
-    (bind-key "n" 'ranger-next-file ranger-mode-map)
-    (bind-key "p" 'ranger-prev-file ranger-mode-map)
-    (bind-key "f" 'ranger-find-file ranger-mode-map)
-    (bind-key "b" 'ranger-up-directory ranger-mode-map)
-    (bind-key "C-n" 'ranger-next-file ranger-mode-map)
-    (bind-key "C-p" 'ranger-prev-file ranger-mode-map) ;; TODO: override etmiyor.
-    (bind-key "C-f" 'ranger-find-file ranger-mode-map)
-    (bind-key "C-b" 'ranger-up-directory ranger-mode-map)
-    )
 
   ;; Initialize snippets
   (load "yasnippet-snippets")
