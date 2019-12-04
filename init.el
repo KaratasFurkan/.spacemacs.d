@@ -66,6 +66,7 @@ This function should only modify configuration layer settings."
                       )
      (python :variables
              ;;python-backend 'anaconda
+             python-backend 'lsp
              python-lsp-server 'pyls
              python-formatter 'black
              python-format-on-save t
@@ -85,10 +86,6 @@ This function should only modify configuration layer settings."
      prettier
      (html :variables
            web-fmt-tool 'prettier
-           scss-enable-lsp t
-           css-enable-lsp t
-           less-enable-lsp t
-           html-enable-lsp t
            )
      (json :variables
            json-fmt-tool 'prettier
@@ -652,6 +649,9 @@ configuration.
 Put your configuration code here, except for variables that should be set
 before packages are loaded."
 
+  ;; Burn the evil!
+  (evil-mode -1)
+
   ;; Genişleterek tara
   (global-set-key (kbd "C-t") 'er/expand-region)
 
@@ -731,12 +731,12 @@ before packages are loaded."
   ;; Multiple cursors skip previous
   (global-set-key (kbd "C-M-S-p") 'mc/skip-to-previous-like-this)
   ;; Multiple cursors unmark last
-  (global-set-key (kbd "C-S-N") 'mc/unmark-previous-like-this)
+  (global-set-key (kbd "C-S-n") 'mc/unmark-previous-like-this)
   ;; Multiple cursors unmark first
-  (global-set-key (kbd "C-S-P") 'mc/unmark-next-like-this)
+  (global-set-key (kbd "C-S-p") 'mc/unmark-next-like-this)
   ;; Multiple cursors add cursor on click
   (global-set-key (kbd "C-M-<mouse-1>") 'mc/add-cursor-on-click)
-  ;;Multiple cursors hide unmatched lines ;; FIXME: make unoverridable
+  ;;Multiple cursors hide unmatched lines ;; TODO: make unoverridable
   ;;(with-eval-after-load 'multiple-cursors
   ;;  (bind-key* "C-c C-c" 'mc-hide-unmatched-lines-mode)
   ;; )
@@ -790,20 +790,10 @@ before packages are loaded."
       )
     )
 
-  (defun c-arrow()
-    "Insert arrow"
-    (interactive)
-    (insert " -> ")
-    )
-
   (with-eval-after-load 'cc-mode
     (bind-key "C-c C-c" 'c++-run c++-mode-map)
     (bind-key "C-c C-c" 'c++-run c-mode-map)
-    (bind-key "C-c C-a" 'c-arrow c-mode-map)
     )
-
-  ;; Disable evil mode
-  (evil-mode -1)
 
   ;; Modeline responsive buffer-file-name-style
   (add-hook
@@ -838,6 +828,7 @@ before packages are loaded."
     (define-key helm-swoop-map (kbd "C-r") 'helm-previous-line)
     (define-key helm-swoop-map (kbd "C-s") 'helm-next-line))
 
+  ;; Disable arrow keys, enter, backspace to get used to emacs keybindings
   (global-hardcore-mode)
 
   ;; Shell settings
@@ -928,6 +919,9 @@ This function is called at the very end of Spacemacs initialization."
  '(lsp-face-highlight-read ((t (:underline t :weight bold :background nil :foreground nil))))
  '(lsp-face-highlight-textual ((t (:underline t :weight bold :background nil :foreground nil))))
  '(lsp-face-highlight-write ((t (:underline t :weight bold :background nil :foreground nil))))
+ '(ahs-face ((t (:underline t :weight bold :background nil :foreground nil))))
+ '(ahs-definition-face ((t (:underline t :weight bold :background nil :foreground nil))))
+ '(ahs-plugin-whole-buffer-face ((t (:underline t :weight bold :background nil :foreground nil))))
  '(mode-line ((t (:background "#262b35"))))
  '(sp-show-pair-match-face ((t (:background nil))))
  '(yas-field-highlight-face ((t (:inherit region)))))
