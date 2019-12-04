@@ -576,7 +576,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq highlight-indent-guides-responsive 'top)
 
   ;; Beacon
-  (setq-default beacon-color "#005500")
+  (setq-default beacon-color "#009900")
 
   ;; Frame title (file name and major mode)
   (setq-default frame-title-format '("%b [%m]"))
@@ -628,6 +628,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; Dotnet prefix key
   (setq dotnet-mode-keymap-prefix (kbd "C-c C-c"))
+
+  ;; Beacon blink on vertical movement (avy için ayarladım)
+  (setq beacon-blink-when-point-moves-vertically 10)
 
   )
 
