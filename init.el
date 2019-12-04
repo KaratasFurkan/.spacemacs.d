@@ -703,9 +703,10 @@ before packages are loaded."
 
   ;; Jump word
   (bind-key* "M-j" 'avy-goto-word-or-subword-1)
-
   ;; Jump line
   (global-set-key (kbd "M-l") 'avy-goto-line)
+  ;; Go back from jump
+  (global-set-key (kbd "C-M-u") 'avy-pop-mark)
 
   ;; Beacon Mode
   (beacon-mode 1)
