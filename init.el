@@ -626,6 +626,10 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Exclude tmp and .emacs.d directories from recentf
   (setq recentf-exclude '("/\\.emacs\\.d/" "^/tmp/"))
 
+  ;; Improve dired (h for human readable file sizes, p for adding slash at the
+  ;; end of directories, v for vendetta)
+  (setq dired-listing-switches "-lhp")
+
   ;; Dotnet prefix key
   (setq dotnet-mode-keymap-prefix (kbd "C-c C-c"))
 
