@@ -841,6 +841,8 @@ before packages are loaded."
   (with-eval-after-load 'org
     ;; Edit source code blocks with more familiar keybinding "C-c C-e""
     (define-key org-mode-map (kbd "C-c C-e") 'org-edit-special)
+    ;; Run source code blocks without asking
+    (setq org-confirm-babel-evaluate nil)
     )
 
   ;; Dotnet mode
