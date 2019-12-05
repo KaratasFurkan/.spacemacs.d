@@ -633,6 +633,9 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   ;; Beacon blink on vertical movement (avy için ayarladım)
   (setq beacon-blink-when-point-moves-vertically 10)
 
+  ;; Company show single candidate to get doc
+  (setq company-box-show-single-candidate t)
+
   )
 
 (defun dotspacemacs/user-load ()
