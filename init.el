@@ -133,8 +133,6 @@ This function should only modify configuration layer settings."
                      spell-checking-enable-by-default nil
                      enable-flyspell-auto-completion t
                      )
-     csharp
-     dotnet
      )
 
    ;; List of additional packages that will be installed without being
@@ -849,12 +847,6 @@ before packages are loaded."
     (define-key org-mode-map (kbd "C-c C-e") 'org-edit-special)
     ;; Run source code blocks without asking
     (setq org-confirm-babel-evaluate nil)
-    )
-
-  ;; Dotnet mode
-  (add-hook 'csharp-mode-hook 'dotnet-mode)
-  (with-eval-after-load 'csharp-mode
-    (spacemacs/toggle-automatic-symbol-highlight-on)
     )
 
   )
