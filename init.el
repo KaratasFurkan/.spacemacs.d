@@ -572,8 +572,11 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
   (setq highlight-indent-guides-method 'character)
   (setq highlight-indent-guides-responsive 'top)
 
-  ;; Beacon
-  (setq-default beacon-color "#009900")
+  ;; Beacon color.
+  ;; Why #D18770 not #D08770? (#D08770 is my cursor color)
+  ;; Because when cursor color and beacon color are same, cursor become white
+  ;; when beacon blink
+  (setq-default beacon-color "#D18770")
 
   ;; Frame title (file name and major mode)
   (setq-default frame-title-format '("%b [%m]"))
