@@ -68,9 +68,9 @@ This function should only modify configuration layer settings."
              ;;python-backend 'anaconda
              python-backend 'lsp
              python-lsp-server 'pyls
-             python-formatter 'black
-             python-format-on-save t
-             python-sort-imports-on-save t
+             python-formatter 'lsp
+             ;;python-format-on-save t
+             ;;python-sort-imports-on-save t
              python-fill-column 88
              )
      restclient
@@ -144,7 +144,6 @@ This function should only modify configuration layer settings."
    ;; Also include the dependencies as they will not be resolved automatically.
    dotspacemacs-additional-packages
    '(
-     highlight-indent-guides
      turkish
      beacon
      deadgrep
@@ -154,6 +153,8 @@ This function should only modify configuration layer settings."
      ace-mc
      w3m
      eglot
+     zoom
+     key-chord
      )
 
    ;; A list of packages that cannot be updated.
@@ -626,7 +627,7 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; Improve dired (h for human readable file sizes, p for adding slash at the
   ;; end of directories, v for vendetta)
-  (setq dired-listing-switches "-lhp")
+  (setq dired-listing-switches "-lhpa")
 
   ;; Dotnet prefix key
   (setq dotnet-mode-keymap-prefix (kbd "C-c C-c"))
@@ -636,6 +637,14 @@ If you are unsure, try setting them in `dotspacemacs/user-config' first."
 
   ;; Company show single candidate to get doc
   (setq company-box-show-single-candidate t)
+  ;; Company align annotations right
+  (setq company-tooltip-align-annotations t)
+
+  ;; Decrease key-chord delay to not execute functions accidently
+  (setq key-chord-two-keys-delay 0.05)
+
+  ;; Disable expand-region hydra (e to edit etc.)
+  (setq expand-region-fast-keys-enabled t)
 
   )
 
@@ -849,6 +858,16 @@ before packages are loaded."
     (setq org-confirm-babel-evaluate nil)
     )
 
+  (key-chord-define-global "gb" 'beginning-of-buffer)
+  (key-chord-define-global "kb" 'kill-current-buffer)
+  (key-chord-define-global "lb" 'helm-buffers-list)
+
+  (key-chord-mode 1)
+
+  ;; Next/Previous line by 5
+  (global-set-key (kbd "M-p") (lambda () (interactive) (previous-line 5)))
+  (global-set-key (kbd "M-n") (lambda () (interactive) (next-line 5)))
+
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -872,7 +891,7 @@ This function is called at the very end of Spacemacs initialization."
  '(company-quickhelp-color-foreground "#DCDCCC")
  '(custom-safe-themes
    (quote
-    ("3d5ef3d7ed58c9ad321f05360ad8a6b24585b9c49abcee67bdcbb0fe583a6950" "728eda145ad16686d4bbb8e50d540563573592013b10c3e2defc493f390f7d83" "7d56fb712ad356e2dacb43af7ec255c761a590e1182fe0537e1ec824b7897357" "2d1fe7c9007a5b76cea4395b0fc664d0c1cfd34bb4f1860300347cdad67fb2f9" "8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "d6f04b6c269500d8a38f3fabadc1caa3c8fdf46e7e63ee15605af75a09d5441e" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
+    ("6cbf6003e137485fb3f904e76fb15bc48abc386540f43f54e2a47a9884e679f6" "3d5ef3d7ed58c9ad321f05360ad8a6b24585b9c49abcee67bdcbb0fe583a6950" "728eda145ad16686d4bbb8e50d540563573592013b10c3e2defc493f390f7d83" "7d56fb712ad356e2dacb43af7ec255c761a590e1182fe0537e1ec824b7897357" "2d1fe7c9007a5b76cea4395b0fc664d0c1cfd34bb4f1860300347cdad67fb2f9" "8d805143f2c71cfad5207155234089729bb742a1cb67b7f60357fdd952044315" "d6f04b6c269500d8a38f3fabadc1caa3c8fdf46e7e63ee15605af75a09d5441e" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(evil-want-Y-yank-to-eol nil)
  '(helm-completion-style (quote emacs))
  '(hl-todo-keyword-faces
@@ -906,6 +925,9 @@ This function is called at the very end of Spacemacs initialization."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:background nil))))
+ '(ahs-definition-face ((t (:underline t :weight bold :background nil :foreground nil))))
+ '(ahs-face ((t (:underline t :weight bold :background nil :foreground nil))))
+ '(ahs-plugin-whole-buffer-face ((t (:underline t :weight bold :background nil :foreground nil))))
  '(company-template-field ((t (:inherit region))))
  '(company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
  '(company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
@@ -919,9 +941,6 @@ This function is called at the very end of Spacemacs initialization."
  '(lsp-face-highlight-read ((t (:underline t :weight bold :background nil :foreground nil))))
  '(lsp-face-highlight-textual ((t (:underline t :weight bold :background nil :foreground nil))))
  '(lsp-face-highlight-write ((t (:underline t :weight bold :background nil :foreground nil))))
- '(ahs-face ((t (:underline t :weight bold :background nil :foreground nil))))
- '(ahs-definition-face ((t (:underline t :weight bold :background nil :foreground nil))))
- '(ahs-plugin-whole-buffer-face ((t (:underline t :weight bold :background nil :foreground nil))))
  '(mode-line ((t (:background "#262b35"))))
  '(sp-show-pair-match-face ((t (:background nil))))
  '(yas-field-highlight-face ((t (:inherit region)))))
